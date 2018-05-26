@@ -1,0 +1,832 @@
+
+<html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>TCESP - Pesquisa Geral do Protocolo</title>
+<LINK href="css/protocolo.css" type=text/css rel=stylesheet>
+
+</head>
+<body>
+
+
+<script language="javascript">
+    //Função cria a estrutura para utilizar ajax***
+    function createXMLHTTP() {
+        var ajax;
+        try {
+            ajax = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        catch (e) {
+            try {
+                ajax = new ActiveXObject("Msxml2.XMLHTTP");
+                alert(ajax);
+            }
+            catch (ex) {
+                try {
+                    ajax = new XMLHttpRequest();
+                }
+                catch (exc) {
+                    alert("Esse browser não tem recursos para uso do Ajax");
+                    ajax = null;
+                }
+            }
+            return ajax;
+        }
+        var arrSignatures = ["MSXML2.XMLHTTP.5.0", "MSXML2.XMLHTTP.4.0",
+           "MSXML2.XMLHTTP.3.0", "MSXML2.XMLHTTP",
+           "Microsoft.XMLHTTP"];
+        for (var i = 0; i < arrSignatures.length; i++) {
+            try {
+                var oRequest = new ActiveXObject(arrSignatures[i]);
+                return oRequest;
+            }
+            catch (oError) {
+            }
+        }
+
+        throw new Error("MSXML is not installed on your system.");
+    }
+
+    function Exibe_Despachos(x) {
+        var formulario = document.getElementById("frmDespachos");
+        var campo = document.getElementsByName("xCDPROCESSO" + x);
+        formulario.xCDPROCESSO.value = campo[0].value;
+        formulario.submit();
+    }
+    function Exibe_Decisoes(x) {
+        var formulario = document.getElementById("frmDecisoes");
+        var campo = document.getElementsByName("xCDPROCESSO" + x);
+        formulario.xCDPROCESSO.value = campo[0].value;
+        formulario.submit();
+    }
+    function Exibe_Detalhes(processo) {
+        var formulario = document.getElementById("frmDetalhes");
+        var numProc = formulario.xPROCESSO;
+        numProc.value = processo;
+        formulario.submit();
+    }
+
+    //Esta função invoca a pagina tc01sql1-terceiro.asp retorna os registros e os exibe***
+    function Exibe_Terceiros(processo, dsparte1, dsparte2) {
+        spIDTerceiros = "spTerceiros" + processo;
+        spIDSinal = "spSinal" + processo;
+
+        if (dsparte2 != "Null" && dsparte2 != "") {
+            terceiro = dsparte2;
+        }
+        else {
+            if (dsparte1 != "Null" && dsparte1 != "") {
+                terceiro = dsparte1;
+            }
+            else {
+                terceiro = "";
+
+            }
+        }
+        var texto = new String(terceiro);
+        terceiro = texto.replace(" ", "|");
+
+        conteudo = document.getElementById(spIDSinal).innerHTML;
+        if (conteudo != 'Outros (ocultar)') {
+            var oHTTPRequest = createXMLHTTP();
+            oHTTPRequest.open("post", "tc01sql1-terceiro.asp", true); //enviamos para a página que faz o select do que foi digitado e traz a lista preenchida.
+            // para solicitacoes utilizando o metodo post deve ser acrescentado
+            // este cabecalho HTTP
+            oHTTPRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            // a funcao abaixo e executada sempre que o estado do objeto muda (onreadystatechange)
+            oHTTPRequest.onreadystatechange = function () {
+                // o valor 4 significa que o objeto ja completou a solicitacao
+                if (oHTTPRequest.readyState == 4) {// abaixo o texto gerado no arquivo executa.asp e colocado no div
+                    document.getElementById(spIDTerceiros).innerHTML = oHTTPRequest.responseText;
+                }
+            }
+            oHTTPRequest.send("Processo=" + processo + "&Terceiro=" + terceiro);
+            document.getElementById(spIDSinal).innerHTML = 'Outros (ocultar)';
+        }
+        else {
+            document.getElementById(spIDTerceiros).innerHTML = '';
+            document.getElementById(spIDSinal).innerHTML = 'Outros (exibir)';
+        }
+    }
+</script>
+
+    	<div align="center">
+			<font face="verdana" size="2">
+				O resultado aqui apresentado possui caráter meramente informativo,<br>
+		    	não se prestando para contagem de quaisquer prazos processuais.<br>
+    			<br>
+				<b>
+					P&aacute;gina 92 de 0 - Total de 0 processos encontrados.
+				</b>
+			</font>
+		 <br>
+		 
+	</div>
+    
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#ADCEEF">
+			<tr>
+	  			<td width="35%" valign="middle" class="titulo">
+					<font face="verdana" size="2"><b>Processo nº:         29298/026/06</b></font>			
+				</td>
+				
+					<td width="40%" valign="MIDDLE" class="titulo"><font face="verdana" size="2"><b>Mat&eacute;ria: CONTRATO</b></font></td>
+					<td width="10%" valign="MIDDLE" class="titulo"><font face="verdana" size="2" color="#F1F1F1">.</font></td>
+					<td width="15%" valign="MIDDLE" class="titulo"><font face="verdana" size="2"><b>Exerc&iacute;cio: 2006</b></font></td>
+				
+	  		</TR>
+		</TABLE>
+		<BR>
+		<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+			
+   	    		<tr>
+          			<td width="10%" valign="top"><b>Contratante:</b></td>
+	       			<td width="90%" valign="top"><b>PREFEITURA MUNICIPAL DE CUBATAO</b></td>
+	     		</TR>
+        	
+	    		<tr>
+	       			<td width="10%" valign="top"><b>Contratada:</b></td>
+	       			<!--Verifica se existe terceiros, caso exista então exibe link -->
+	       			
+	       				<td width="90%" valign="top"><b>NUMERO UM COMERCIO E INDUSTRIA DE ALIMENTOS LTDA</b></td>
+	       			
+	     		</TR>
+        	
+                    <tr>
+	       			    <td width="10%" valign="top"><b>Relator:</b></td>
+		       		    <td width="90%" valign="top"><b>DIMAS EDUARDO RAMALHO</b></td>
+             		</TR>
+                
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Vigência Inicial:</b></td>
+        						<td width="90%" valign="top"><b>05/05/2006</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Ordenador de despesa:</b></td>
+        						<td width="90%" valign="top"><b>CLERMONT SILVEIRA CASTOR</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Autoridade Responsável:</b></td>
+        						<td width="90%" valign="top"><b>CLERMONT SILVEIRA CASTOR</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Modalidade:</b></td>
+        						<td width="90%" valign="top"><b>Pregão</b></td>        	    
+        			    </TR>
+        			
+        		<tr>
+            		<td width="10%" valign="top"><b>Objeto:</b></td>
+               		<td width="90%"><b><p align="left">COMPRA PARCELADA DE GENEROS ALIMENTICIOS DIVERSOS A SEREM DESTINADOS A MERENDA ESCOLAR DAS ESCOLAS E CRECHES MUNICIPAIS DE CUBATAO      ANEXO I - ITENS 01, 09, 22, 24 E 47</p></b></td>
+            	</TR>
+        	
+            <tr>
+            		<td width="10%" valign="top"><b>Data de Autuação:</b></td>
+               		<td width="90%"><p align="left"><b>29/08/2006</b></p></td>
+            </tr>
+        	
+        <tr>
+            <td width="16%" valign="top">
+                <b>Referenciado a :</b></td>
+            <td width="39%">
+                <a href="javascript:Exibe_Detalhes('29292/026/06');"><font color="#BA0909"
+                    face="verdana" size="2"><strong>
+                                29292/026/06
+                    </strong></font></a>
+                <form method="post" action="tc01sql1.asp" name="frmDetalhes" id="frmDetalhes">
+                    <input type="hidden" name="xPROCESSO" value=        29298/026/06/>
+                </form>
+            </td>
+        </tr>
+        
+        	
+		</TABLE>
+		<p align="center">
+			<table border=0 CELLSPACING=1 CELLPADDING=4  width="100%">
+				
+					<td align="CENTER" width="100%" Valign="TOP"><B>PROCESSO EXPURGADO EM: 09/03/2016</B></TD>
+				
+			</TABLE>
+		</p>
+		<table border=0 CELLSPACING=0 CELLPADDING=0 width="100%" BGCOLOR="#F1F1F1" align="center">
+			<TR align="center">
+				<td width="45%"></td>
+				<td width="55%" align="center">
+					<font face="verdana" size="2"><b>
+						ANDAMENTO
+					</b></font>
+				</TD>	
+			</TR>
+		</TABLE>
+		<br>
+		<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+			<tr>
+				<td width="10%" Valign="TOP"><B>Remetente:</B></TD>
+        		<td width="40%" Valign="TOP"><B>3 DIRETORIA DE FISCALIZACAO</B></TD>
+	    		<td width="20%" Valign="TOP"><B>Data de remessa:</B></TD>
+        		<td width="30%" Valign="TOP"><B>16/01/2008</B></TD>
+			</TR>
+    		<tr>
+				<td width="10%" Valign="TOP"><B>Destino:</B></TD>
+	    		<td width="40%" Valign="TOP"><B>DE-5-SECAO DE ARQUIVO</B></TD>
+	    		<td width="20%" Valign="TOP"><B>Motivo:</B></TD>
+        		<td width="30%" Valign="TOP"><B>ARQUIVAR</B></TD>
+			</TR>
+		</TABLE>
+		<br>
+		<table border=0 CELLSPACING=0 CELLPADDING=0 width="100%" BGCOLOR="#F1F1F1" align="center">
+			<TR align="center">
+				<td width="45%"></td>
+				<td width="55%" align="center">
+					<font face="verdana" size="2"><b>
+						DOCUMENTOS
+					</b></font>
+				</TD>	
+			</TR>
+		</TABLE>
+		<br>
+		
+			<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+				
+				<tr>
+					<td width="50%" align="left" Valign="TOP">
+						<b>
+							<a href="javascript:Exibe_Decisoes(1)"><font face="Verdana" color="#BA0909" size="2">Decisões</font></a>
+						</b>
+			        </TD>
+			        <td>
+						<form method="post" action="tc01sql1-decisoes.asp" name="frmDecisoes" id="frmDecisoes">
+							<input type=hidden name="xCDPROCESSO1" value=        29298/026/06>
+							<input type=hidden name="xCDPROCESSO">
+						</form>
+			        </TD>
+				</tr>
+				
+			</TABLE>				
+		
+		<P>
+		
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#ADCEEF">
+			<tr>
+	  			<td width="35%" valign="middle" class="titulo">
+					<font face="verdana" size="2"><b>Processo nº:         29300/026/06</b></font>			
+				</td>
+				
+					<td width="40%" valign="MIDDLE" class="titulo"><font face="verdana" size="2"><b>Mat&eacute;ria: CONTRATO</b></font></td>
+					<td width="10%" valign="MIDDLE" class="titulo"><font face="verdana" size="2" color="#F1F1F1">.</font></td>
+					<td width="15%" valign="MIDDLE" class="titulo"><font face="verdana" size="2"><b>Exerc&iacute;cio: 2006</b></font></td>
+				
+	  		</TR>
+		</TABLE>
+		<BR>
+		<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+			
+   	    		<tr>
+          			<td width="10%" valign="top"><b>Contratante:</b></td>
+	       			<td width="90%" valign="top"><b>PREFEITURA MUNICIPAL DE CUBATAO</b></td>
+	     		</TR>
+        	
+	    		<tr>
+	       			<td width="10%" valign="top"><b>Contratada:</b></td>
+	       			<!--Verifica se existe terceiros, caso exista então exibe link -->
+	       			
+	       				<td width="90%" valign="top"><b>MAFURGEL COMERCIO LTDA</b></td>
+	       			
+	     		</TR>
+        	
+                    <tr>
+	       			    <td width="10%" valign="top"><b>Relator:</b></td>
+		       		    <td width="90%" valign="top"><b>DIMAS EDUARDO RAMALHO</b></td>
+             		</TR>
+                
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Vigência Inicial:</b></td>
+        						<td width="90%" valign="top"><b>05/05/2006</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Ordenador de despesa:</b></td>
+        						<td width="90%" valign="top"><b>CLERMONT SILVEIRA CASTOR</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Autoridade Responsável:</b></td>
+        						<td width="90%" valign="top"><b>CLERMONT SILVEIRA CASTOR</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Modalidade:</b></td>
+        						<td width="90%" valign="top"><b>Pregão</b></td>        	    
+        			    </TR>
+        			
+        		<tr>
+            		<td width="10%" valign="top"><b>Objeto:</b></td>
+               		<td width="90%"><b><p align="left">COMPRA PARCELADA DE GENEROS ALIMENTICIOS DIVERSOS A SEREM DESTINADOS A MERENDA ESCOLAR DAS ESCOLAS E CRECHES MUNICIPAIS DE CUBATAO      ANEXO I - ITENS 4 E 5</p></b></td>
+            	</TR>
+        	
+            <tr>
+            		<td width="10%" valign="top"><b>Data de Autuação:</b></td>
+               		<td width="90%"><p align="left"><b>29/08/2006</b></p></td>
+            </tr>
+        	
+        <tr>
+            <td width="16%" valign="top">
+                <b>Referenciado a :</b></td>
+            <td width="39%">
+                <a href="javascript:Exibe_Detalhes('29292/026/06');"><font color="#BA0909"
+                    face="verdana" size="2"><strong>
+                                29292/026/06
+                    </strong></font></a>
+                <form method="post" action="tc01sql1.asp" name="frmDetalhes" id="frmDetalhes">
+                    <input type="hidden" name="xPROCESSO" value=        29298/026/06/>
+                </form>
+            </td>
+        </tr>
+        
+        	
+		</TABLE>
+		<p align="center">
+			<table border=0 CELLSPACING=1 CELLPADDING=4  width="100%">
+				
+					<td align="CENTER" width="100%" Valign="TOP"><B>PROCESSO EXPURGADO EM: 09/03/2016</B></TD>
+				
+			</TABLE>
+		</p>
+		<table border=0 CELLSPACING=0 CELLPADDING=0 width="100%" BGCOLOR="#F1F1F1" align="center">
+			<TR align="center">
+				<td width="45%"></td>
+				<td width="55%" align="center">
+					<font face="verdana" size="2"><b>
+						ANDAMENTO
+					</b></font>
+				</TD>	
+			</TR>
+		</TABLE>
+		<br>
+		<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+			<tr>
+				<td width="10%" Valign="TOP"><B>Remetente:</B></TD>
+        		<td width="40%" Valign="TOP"><B>3 DIRETORIA DE FISCALIZACAO</B></TD>
+	    		<td width="20%" Valign="TOP"><B>Data de remessa:</B></TD>
+        		<td width="30%" Valign="TOP"><B>16/01/2008</B></TD>
+			</TR>
+    		<tr>
+				<td width="10%" Valign="TOP"><B>Destino:</B></TD>
+	    		<td width="40%" Valign="TOP"><B>DE-5-SECAO DE ARQUIVO</B></TD>
+	    		<td width="20%" Valign="TOP"><B>Motivo:</B></TD>
+        		<td width="30%" Valign="TOP"><B>ARQUIVAR</B></TD>
+			</TR>
+		</TABLE>
+		<br>
+		<table border=0 CELLSPACING=0 CELLPADDING=0 width="100%" BGCOLOR="#F1F1F1" align="center">
+			<TR align="center">
+				<td width="45%"></td>
+				<td width="55%" align="center">
+					<font face="verdana" size="2"><b>
+						DOCUMENTOS
+					</b></font>
+				</TD>	
+			</TR>
+		</TABLE>
+		<br>
+		
+			<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+				
+				<tr>
+					<td width="50%" align="left" Valign="TOP">
+						<b>
+							<a href="javascript:Exibe_Decisoes(2)"><font face="Verdana" color="#BA0909" size="2">Decisões</font></a>
+						</b>
+			        </TD>
+			        <td>
+						<form method="post" action="tc01sql1-decisoes.asp" name="frmDecisoes" id="frmDecisoes">
+							<input type=hidden name="xCDPROCESSO2" value=        29300/026/06>
+							<input type=hidden name="xCDPROCESSO">
+						</form>
+			        </TD>
+				</tr>
+				
+			</TABLE>				
+		
+		<P>
+		
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#ADCEEF">
+			<tr>
+	  			<td width="35%" valign="middle" class="titulo">
+					<font face="verdana" size="2"><b>Processo nº:         29438/026/08</b></font>			
+				</td>
+				
+					<td width="40%" valign="MIDDLE" class="titulo"><font face="verdana" size="2"><b>Mat&eacute;ria: CONTRATO</b></font></td>
+					<td width="10%" valign="MIDDLE" class="titulo"><font face="verdana" size="2" color="#F1F1F1">.</font></td>
+					<td width="15%" valign="MIDDLE" class="titulo"><font face="verdana" size="2"><b>Exerc&iacute;cio: 2008</b></font></td>
+				
+	  		</TR>
+		</TABLE>
+		<BR>
+		<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+			
+   	    		<tr>
+          			<td width="10%" valign="top"><b>Contratante:</b></td>
+	       			<td width="90%" valign="top"><b>PROGRESSO E DESENVOLVIMENTO DE GUARULHOS - PROGUARU       </b></td>
+	     		</TR>
+        	
+	    		<tr>
+	       			<td width="10%" valign="top"><b>Contratada:</b></td>
+	       			<!--Verifica se existe terceiros, caso exista então exibe link -->
+	       			
+	       				<td width="90%" valign="top"><b>TECNYT ELETRO ELETRONICA LTDA.</b></td>
+	       			
+	     		</TR>
+        	
+                    <tr>
+	       			    <td width="10%" valign="top"><b>Relator:</b></td>
+		       		    <td width="90%" valign="top"><b>EDGARD CAMARGO RODRIGUES</b></td>
+             		</TR>
+                
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Vigência Inicial:</b></td>
+        						<td width="90%" valign="top"><b>01/07/2008</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Ordenador de despesa:</b></td>
+        						<td width="90%" valign="top"><b>ROGERIO MENEZES</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Autoridade Responsável:</b></td>
+        						<td width="90%" valign="top"><b>ROGERIO MENEZES</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Modalidade:</b></td>
+        						<td width="90%" valign="top"><b>Concorrência</b></td>        	    
+        			    </TR>
+        			
+        		<tr>
+            		<td width="10%" valign="top"><b>Objeto:</b></td>
+               		<td width="90%"><b><p align="left">CONSTRUCAO DA CRECHE VILA ALZIRA</p></b></td>
+            	</TR>
+        	
+            <tr>
+            		<td width="10%" valign="top"><b>Data de Autuação:</b></td>
+               		<td width="90%"><p align="left"><b>07/08/2008</b></p></td>
+            </tr>
+        	
+        	
+		</TABLE>
+		<p align="center">
+			<table border=0 CELLSPACING=1 CELLPADDING=4  width="100%">
+				
+					<td align="CENTER" width="100%" Valign="TOP"><B>PROCESSO EXPURGADO EM: 31/10/2017</B></TD>
+				
+			</TABLE>
+		</p>
+		<table border=0 CELLSPACING=0 CELLPADDING=0 width="100%" BGCOLOR="#F1F1F1" align="center">
+			<TR align="center">
+				<td width="45%"></td>
+				<td width="55%" align="center">
+					<font face="verdana" size="2"><b>
+						ANDAMENTO
+					</b></font>
+				</TD>	
+			</TR>
+		</TABLE>
+		<br>
+		<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+			<tr>
+				<td width="10%" Valign="TOP"><B>Remetente:</B></TD>
+        		<td width="40%" Valign="TOP"><B>1 DIRETORIA DE FISCALIZACAO</B></TD>
+	    		<td width="20%" Valign="TOP"><B>Data de remessa:</B></TD>
+        		<td width="30%" Valign="TOP"><B>08/03/2010</B></TD>
+			</TR>
+    		<tr>
+				<td width="10%" Valign="TOP"><B>Destino:</B></TD>
+	    		<td width="40%" Valign="TOP"><B>DE-5-SECAO DE ARQUIVO</B></TD>
+	    		<td width="20%" Valign="TOP"><B>Motivo:</B></TD>
+        		<td width="30%" Valign="TOP"><B>ARQUIVAR</B></TD>
+			</TR>
+		</TABLE>
+		<br>
+		<table border=0 CELLSPACING=0 CELLPADDING=0 width="100%" BGCOLOR="#F1F1F1" align="center">
+			<TR align="center">
+				<td width="45%"></td>
+				<td width="55%" align="center">
+					<font face="verdana" size="2"><b>
+						DOCUMENTOS
+					</b></font>
+				</TD>	
+			</TR>
+		</TABLE>
+		<br>
+		
+			<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+				
+				<tr>
+					<td width="50%" align="left" Valign="TOP">
+						<b>
+							<a href="javascript:Exibe_Decisoes(3)"><font face="Verdana" color="#BA0909" size="2">Decisões</font></a>
+						</b>
+			        </TD>
+			        <td>
+						<form method="post" action="tc01sql1-decisoes.asp" name="frmDecisoes" id="frmDecisoes">
+							<input type=hidden name="xCDPROCESSO3" value=        29438/026/08>
+							<input type=hidden name="xCDPROCESSO">
+						</form>
+			        </TD>
+				</tr>
+				
+			</TABLE>				
+		
+		<P>
+		
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#ADCEEF">
+			<tr>
+	  			<td width="35%" valign="middle" class="titulo">
+					<font face="verdana" size="2"><b>Processo nº:         29638/026/91</b></font>			
+				</td>
+				
+					<td width="40%" valign="MIDDLE" class="titulo"><font face="verdana" size="2"><b>Mat&eacute;ria: CONTRATO</b></font></td>
+					<td width="10%" valign="MIDDLE" class="titulo"><font face="verdana" size="2" color="#F1F1F1">.</font></td>
+					<td width="15%" valign="MIDDLE" class="titulo"><font face="verdana" size="2"><b>Exerc&iacute;cio: 1990</b></font></td>
+				
+	  		</TR>
+		</TABLE>
+		<BR>
+		<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+			
+   	    		<tr>
+          			<td width="10%" valign="top"><b>Contratante:</b></td>
+	       			<td width="90%" valign="top"><b>PROGRESSO DE OSASCO S/A - PROSASCO       </b></td>
+	     		</TR>
+        	
+	    		<tr>
+	       			<td width="10%" valign="top"><b>Contratada:</b></td>
+	       			<!--Verifica se existe terceiros, caso exista então exibe link -->
+	       			
+	       				<td width="90%" valign="top"><b>HABITA S/A CONSULTORIA E EMPREENDIMENTOS</b></td>
+	       			
+	     		</TR>
+        	
+                    <tr>
+	       			    <td width="10%" valign="top"><b>Relator:</b></td>
+		       		    <td width="90%" valign="top"><b>ROBSON MARINHO</b></td>
+             		</TR>
+                
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Vigência Inicial:</b></td>
+        						<td width="90%" valign="top"><b>02/10/1990</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Modalidade:</b></td>
+        						<td width="90%" valign="top"><b>Tomada de preço</b></td>        	    
+        			    </TR>
+        			
+        		<tr>
+            		<td width="10%" valign="top"><b>Objeto:</b></td>
+               		<td width="90%"><b><p align="left">EXECUCAO DO MURO DE ARRIMO JUNTO A RUA BRILHANTE NO TRECHO DESTINADO A CONSTRUCAO DA CRECHE DO JARDIM MUTINGA</p></b></td>
+            	</TR>
+        	
+            <tr>
+            		<td width="10%" valign="top"><b>Data de Autuação:</b></td>
+               		<td width="90%"><p align="left"><b>21/10/1991</b></p></td>
+            </tr>
+        	
+        	
+		</TABLE>
+		<p align="center">
+			<table border=0 CELLSPACING=1 CELLPADDING=4  width="100%">
+				
+					<td align="CENTER" width="100%" Valign="TOP"><B>PROCESSO EXPURGADO EM: 10/10/2003</B></TD>
+				
+			</TABLE>
+		</p>
+		<table border=0 CELLSPACING=0 CELLPADDING=0 width="100%" BGCOLOR="#F1F1F1" align="center">
+			<TR align="center">
+				<td width="45%"></td>
+				<td width="55%" align="center">
+					<font face="verdana" size="2"><b>
+						ANDAMENTO
+					</b></font>
+				</TD>	
+			</TR>
+		</TABLE>
+		<br>
+		<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+			<tr>
+				<td width="10%" Valign="TOP"><B>Remetente:</B></TD>
+        		<td width="40%" Valign="TOP"><B>5ª DIRETORIA DE FISCALIZACAO</B></TD>
+	    		<td width="20%" Valign="TOP"><B>Data de remessa:</B></TD>
+        		<td width="30%" Valign="TOP"><B>23/06/1995</B></TD>
+			</TR>
+    		<tr>
+				<td width="10%" Valign="TOP"><B>Destino:</B></TD>
+	    		<td width="40%" Valign="TOP"><B>DE-5-SECAO DE ARQUIVO</B></TD>
+	    		<td width="20%" Valign="TOP"><B>Motivo:</B></TD>
+        		<td width="30%" Valign="TOP"><B>ARQUIVAR</B></TD>
+			</TR>
+		</TABLE>
+		<br>
+		<table border=0 CELLSPACING=0 CELLPADDING=0 width="100%" BGCOLOR="#F1F1F1" align="center">
+			<TR align="center">
+				<td width="45%"></td>
+				<td width="55%" align="center">
+					<font face="verdana" size="2"><b>
+						DOCUMENTOS
+					</b></font>
+				</TD>	
+			</TR>
+		</TABLE>
+		<br>
+		
+			<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+				
+				<tr>
+					<td width="50%" align="left" Valign="TOP">
+						<b>
+							<a href="javascript:Exibe_Decisoes(4)"><font face="Verdana" color="#BA0909" size="2">Decisões</font></a>
+						</b>
+			        </TD>
+			        <td>
+						<form method="post" action="tc01sql1-decisoes.asp" name="frmDecisoes" id="frmDecisoes">
+							<input type=hidden name="xCDPROCESSO4" value=        29638/026/91>
+							<input type=hidden name="xCDPROCESSO">
+						</form>
+			        </TD>
+				</tr>
+				
+			</TABLE>				
+		
+		<P>
+		
+		<table border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="#ADCEEF">
+			<tr>
+	  			<td width="35%" valign="middle" class="titulo">
+					<font face="verdana" size="2"><b>Processo nº:         29682/026/05</b></font>			
+				</td>
+				
+					<td width="40%" valign="MIDDLE" class="titulo"><font face="verdana" size="2"><b>Mat&eacute;ria: CONTRATO</b></font></td>
+					<td width="10%" valign="MIDDLE" class="titulo"><font face="verdana" size="2" color="#F1F1F1">.</font></td>
+					<td width="15%" valign="MIDDLE" class="titulo"><font face="verdana" size="2"><b>Exerc&iacute;cio: 2003</b></font></td>
+				
+	  		</TR>
+		</TABLE>
+		<BR>
+		<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+			
+   	    		<tr>
+          			<td width="10%" valign="top"><b>Contratante:</b></td>
+	       			<td width="90%" valign="top"><b>PREFEITURA MUNICIPAL DE ITUPEVA</b></td>
+	     		</TR>
+        	
+	    		<tr>
+	       			<td width="10%" valign="top"><b>Contratada:</b></td>
+	       			<!--Verifica se existe terceiros, caso exista então exibe link -->
+	       			
+	       				<td width="90%" valign="top"><b>EDEVALDO RETONDO ITUPEVA ME</b></td>
+	       			
+	     		</TR>
+        	
+                    <tr>
+	       			    <td width="10%" valign="top"><b>Relator:</b></td>
+		       		    <td width="90%" valign="top"><b>EDGARD CAMARGO RODRIGUES</b></td>
+             		</TR>
+                
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Vigência Inicial:</b></td>
+        						<td width="90%" valign="top"><b>03/02/2003</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Ordenador de despesa:</b></td>
+        						<td width="90%" valign="top"><b>DORIVAL RAYMUNDO</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Autoridade Responsável:</b></td>
+        						<td width="90%" valign="top"><b>DORIVAL RAYMUNDO</b></td>        	    
+        			    </TR>
+        			
+        			    <tr>
+        						<td	width="10%" valign="top"><b>Modalidade:</b></td>
+        						<td width="90%" valign="top"><b>Convite</b></td>        	    
+        			    </TR>
+        			
+        		<tr>
+            		<td width="10%" valign="top"><b>Objeto:</b></td>
+               		<td width="90%"><b><p align="left">AQUISICAO DE CARNE BOVINA, BIFE E FIGADO BOVINO PARA CRECHES  MUNICIPAIS.</p></b></td>
+            	</TR>
+        	
+            <tr>
+            		<td width="10%" valign="top"><b>Data de Autuação:</b></td>
+               		<td width="90%"><p align="left"><b>04/10/2005</b></p></td>
+            </tr>
+        	
+        	
+		</TABLE>
+		<p align="center">
+			<table border=0 CELLSPACING=1 CELLPADDING=4  width="100%">
+				
+					<td align="CENTER" width="100%" Valign="TOP"><B>PROCESSO EXPURGADO EM: 08/09/2016</B></TD>
+				
+			</TABLE>
+		</p>
+		<table border=0 CELLSPACING=0 CELLPADDING=0 width="100%" BGCOLOR="#F1F1F1" align="center">
+			<TR align="center">
+				<td width="45%"></td>
+				<td width="55%" align="center">
+					<font face="verdana" size="2"><b>
+						ANDAMENTO
+					</b></font>
+				</TD>	
+			</TR>
+		</TABLE>
+		<br>
+		<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+			<tr>
+				<td width="10%" Valign="TOP"><B>Remetente:</B></TD>
+        		<td width="40%" Valign="TOP"><B>CARTORIO DR. CLAUDIO FERRAZ DE ALVARENGA</B></TD>
+	    		<td width="20%" Valign="TOP"><B>Data de remessa:</B></TD>
+        		<td width="30%" Valign="TOP"><B>14/08/2009</B></TD>
+			</TR>
+    		<tr>
+				<td width="10%" Valign="TOP"><B>Destino:</B></TD>
+	    		<td width="40%" Valign="TOP"><B>DE-5-SECAO DE ARQUIVO</B></TD>
+	    		<td width="20%" Valign="TOP"><B>Motivo:</B></TD>
+        		<td width="30%" Valign="TOP"><B>REARQUIVAR</B></TD>
+			</TR>
+		</TABLE>
+		<br>
+		<table border=0 CELLSPACING=0 CELLPADDING=0 width="100%" BGCOLOR="#F1F1F1" align="center">
+			<TR align="center">
+				<td width="45%"></td>
+				<td width="55%" align="center">
+					<font face="verdana" size="2"><b>
+						DOCUMENTOS
+					</b></font>
+				</TD>	
+			</TR>
+		</TABLE>
+		<br>
+		
+			<table border=0 CELLSPACING=1 CELLPADDING=4 width="100%">
+				
+			 	<tr>
+					<td width="50%" align="left" Valign="TOP">
+						<b>
+							<a href="javascript:Exibe_Despachos(5);"><font face="Verdana" color="#BA0909" size="2">Despachos</font></a>
+						</b>
+			        </TD>
+			        <td>
+						<form method="post" action="tc01sql1-despachos.asp" name="frmDespachos" id="frmDespachos">						    
+							<input type=hidden name="xCDPROCESSO5" value=        29682/026/05>
+							<input type=hidden name="xCDPROCESSO">
+						</form>
+			        </TD>
+				</tr>
+				
+				<tr>
+					<td width="50%" align="left" Valign="TOP">
+						<b>
+							<a href="javascript:Exibe_Decisoes(5)"><font face="Verdana" color="#BA0909" size="2">Decisões</font></a>
+						</b>
+			        </TD>
+			        <td>
+						<form method="post" action="tc01sql1-decisoes.asp" name="frmDecisoes" id="frmDecisoes">
+							<input type=hidden name="xCDPROCESSO5" value=        29682/026/05>
+							<input type=hidden name="xCDPROCESSO">
+						</form>
+			        </TD>
+				</tr>
+				
+			</TABLE>				
+		
+		<P>
+		
+	<center>
+		<font face="verdana" size="2"><b>
+			P&aacute;gina 92 de 0
+		</b></font>
+	
+	<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%" >
+		
+		
+			<TD WIDTH="100%" ALIGN="CENTER"><b><a href="javascript:history.go(-91);window.name='ReloadPesquisa'"><font face="Verdana" color="#BA0909">Volta para a página anterior.</font></a></b></TD>
+	    
+
+	</TABLE>
+	<BR>
+	<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 WIDTH="100%" >
+		<TD WIDTH="40%" class="titulo"><font face="verdana" size="2" color="#F1F1F1">.</font></TD>
+		<TD WIDTH="60%" ALIGN="CENTER" class="titulo"><b><font face="verdana" size="2" color="#BA0909">Total de Processos: 0 </b></TD>
+	</TABLE>
+	</center>
+
+</body>
+
+</html>
